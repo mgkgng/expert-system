@@ -38,7 +38,7 @@ class Parser:
             case ParserType.Query:
                 res = self.fact_or_query()
             case ParserType.Statement:
-                res = self.expression()
+                res = self.logical_statement()
         return self.type, res
 
     def fact_or_query(self):
@@ -62,7 +62,6 @@ class Parser:
             return False
         
     def factor(self):
-        # Implement the logic for parsing factors (propositions, NOT, parentheses)
         token = self.current_token
 
         if token.type == TokenType.NOT:
@@ -82,7 +81,6 @@ class Parser:
         raise Exception(f"Unexpected token: {token}")
 
     def term(self):
-        # Implement the logic for parsing terms
         node = self.factor()
 
         while self.current_token.type == TokenType.AND:
@@ -99,5 +97,23 @@ class Parser:
             token = self.current_token
             self.next()
             node = Node(token.type, left=node, right=self.term())
+
+        return node
+
+    def logical_statement(self):
+        count = 0
+        node = self.expression()
+
+        while self.current_token.type in (TokenType.IMPLIES, TokenType.IFF):
+            count += 1
+            if count > 1:
+                raise Exception("Error: Statement contains more than one IMPLIES or IFF.")
+
+            token = self.current_token
+            self.next()
+            node = Node(token.type, left=node, right=self.expression())
+
+        if count == 0:
+            raise Exception("Error: Statement does not contain any IMPLIES or IFF.")
 
         return node
