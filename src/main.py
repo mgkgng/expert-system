@@ -17,7 +17,7 @@ if __name__ == '__main__':
         tokens = lexer.tokenize(line)
         parser = Parser(tokens)
         parser_type, parser_res = parser.parse()
-        if parser_type == ParserType.Facts:
+        if parser_type == ParserType.Fact:
             if facts is not None:
                 raise Exception("Multiple facts")
             facts = parser_res

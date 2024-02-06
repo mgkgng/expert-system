@@ -4,8 +4,8 @@ from .node import Node
 from enum import Enum, auto
 
 class ParserType(Enum):
-    Statement = auto()
-    Facts = auto()
+    Rule = auto()
+    Fact = auto()
     Query = auto()
 
 # Recursive descent parser
@@ -20,25 +20,25 @@ class Parser:
 
         match tokens[0].type:
             case TokenType.FACTS:
-                self.type = ParserType.Facts
+                self.type = ParserType.Fact
                 self.tokens = tokens[1:]
             case TokenType.QUERY:
                 self.type = ParserType.Query
                 self.tokens = tokens[1:]
             case _:
-                self.type = ParserType.Statement
+                self.type = ParserType.Rule
                 self.tokens = tokens
 
         self.next() and self.next()
                 
     def parse(self):
         match self.type:
-            case ParserType.Facts:
+            case ParserType.Fact:
                 res = self.fact_or_query()
             case ParserType.Query:
                 res = self.fact_or_query()
-            case ParserType.Statement:
-                res = self.logical_statement()
+            case ParserType.Rule:
+                res = self.rule()
         return self.type, res
 
     def fact_or_query(self):
@@ -100,7 +100,7 @@ class Parser:
 
         return node
 
-    def logical_statement(self):
+    def rule(self):
         count = 0
         node = self.expression()
 
