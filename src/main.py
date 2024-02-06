@@ -1,6 +1,6 @@
 import sys
 from parser import Parser, Lexer, ParserType, ASTWrapper
-
+from inference_engine import InferenceEngine
 from utils import *
 
 if __name__ == '__main__':
@@ -29,4 +29,7 @@ if __name__ == '__main__':
             print(ASTWrapper(parser_res))
             asts.append(ASTWrapper(parser_res))
 
-        # ast.append(parser.expression())
+    inference_engine = InferenceEngine(asts)
+    answers = inference_engine.answer_queries(facts, queries)
+    for k, v in answers.items():
+        print(f'{k}: {v if v is not None else "Undetermined"}')

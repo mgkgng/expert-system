@@ -9,7 +9,7 @@ class Lexer:
         pos = 0
         while pos < len(input_str):
             curr_char = input_str[pos]            
-            if curr_char.isalpha():
+            if curr_char.isalpha() and curr_char.isupper():
                 tokens.append(Token(TokenType.Prop, curr_char))
             elif curr_char == '+':
                 tokens.append(Token(TokenType.AND))
