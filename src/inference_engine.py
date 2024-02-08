@@ -51,7 +51,7 @@ class InferenceEngine:
 
     def get_prop_value(self, symbol):
         res = self.props[symbol].value
-        if res is None and res.evaluated is False:
-            res = self.evaluate_goal(symbol)
-        if res is None and res.evaluated is True:
-            print('Error: Proposition cannot be evaluated')
+        if res.evaluated is True:
+            return res.value
+        if res is None:
+            return self.evaluate_goal(symbol)
