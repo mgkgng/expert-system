@@ -1,16 +1,18 @@
 import sys
 from parser import Parser, Lexer, ParserType, ASTWrapper
 from inference_engine import InferenceEngine
+from proposition import Proposition, create_propositions
+from rule import Rule
 from utils import *
 
-if __name__ == '__main__':
+def main():
     if (len(sys.argv) != 2):
         print('Usage: python3 main.py <path to .txt file>')
         sys.exit(1)
     
     contents = retrieve_contents(sys.argv[1])
     lexer = Lexer()
-    asts = []
+    rules = []
     facts = None
     queries = None
     for line in contents:
@@ -26,10 +28,13 @@ if __name__ == '__main__':
                 raise Exception("Multiple queries")
             queries = parser_res
         else:
-            print(ASTWrapper(parser_res))
-            asts.append(ASTWrapper(parser_res))
+            rules.append(Rule(parser_res.left, parser_res.right, parser_res.type))
 
-    inference_engine = InferenceEngine(asts)
-    answers = inference_engine.answer_queries(facts, queries)
-    for k, v in answers.items():
-        print(f'{k}: {v if v is not None else "Undetermined"}')
+    props = create_propositions(rules, facts, queries)
+    inference_engine = InferenceEngine(rules, props)
+    # answers = inference_engine.answer_queries(facts, queries)
+    # for k, v in answers.items():
+    #     print(f'{k}: {v if v is not None else "Undetermined"}')
+
+if __name__ == '__main__':
+    main()

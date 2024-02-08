@@ -10,6 +10,15 @@ class Node:
     def __str__(self):
         return self.print_tree()
 
+    def find_node(self, value):
+        if self.value == value:
+            return self
+        if self.left is not None:
+            return self.left.find_node(value)
+        if self.right is not None:
+            return self.right.find_node(value)
+        return None
+
     def print_tree(self, depth=0):
         indent = '  ' * depth  # Two spaces per depth level
         node_rep = f"{TokenString[self.type]}" + (f"({self.value})" if self.value is not None else "")

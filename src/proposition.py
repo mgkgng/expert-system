@@ -7,6 +7,12 @@ class Proposition:
         self.to_query = to_query
         self.evaluated = evaluated
 
+    def __str__(self):
+        return f'{self.symbol}'
+
+    def __repr__(self): 
+        return self.__str__()
+
 def create_propositions(rules, facts, queries):
     propositions = {}
     
@@ -16,7 +22,9 @@ def create_propositions(rules, facts, queries):
     for fact in facts:
         propositions[fact] = Proposition(fact, value=True, evaluated=True)
 
-    rules_proposition_set = propositions_from_rules(rules)
+    rules_proposition_set = set()
+    for rule in rules:
+        rules_proposition_set.add(rule.get_props())
 
     for prop in rules_proposition_set:
         if prop not in propositions:
@@ -24,10 +32,3 @@ def create_propositions(rules, facts, queries):
     
     return propositions
 
-def propositions_from_rules(node, propositions=set()):
-    if node.type == TokenType.Prop:
-        propositions.add(node.value)
-    elif node.type != TokenType.NOT:
-        propositions_from_rules(node.left, propositions)
-        propositions_from_rules(node.right, propositions)
-    return propositions
