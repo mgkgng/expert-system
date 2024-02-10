@@ -1,5 +1,4 @@
 from parser import TokenType, TokenNotation
-from proposition import Proposition
 
 class Rule:
     def __init__(self, premise, conclusion, connection_type):
@@ -23,9 +22,11 @@ class Rule:
         # Return True if the premises are satisfied, False otherwise
         pass
 
-    def get_all_props(self, separate_NOT=False):
-        prop_set = self.collect_props_recursive(self.conclusion, separate_NOT=separate_NOT)
-        self.collect_props_recursive(self.premise, prop_set, separate_NOT=separate_NOT)
+    def get_all_props(self, prop_set=None, separate_NOT=False):
+        if prop_set is None:
+            prop_set = set()
+        prop_set = self.collect_props_recursive(self.conclusion, prop_set, separate_NOT=separate_NOT)
+        prop_set = self.collect_props_recursive(self.premise, prop_set, separate_NOT=separate_NOT)
         return prop_set
     
     def get_premise_props(self, separate_NOT=False):

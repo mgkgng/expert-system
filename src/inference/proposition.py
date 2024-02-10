@@ -1,14 +1,15 @@
 from parser import TokenType
+from .logical_value import LogicalValue
 
 class Proposition:
     def __init__(self, symbol, value=False, to_query=False, evaluated=False):
         self.symbol = symbol
-        self.value = value
+        self.value = LogicalValue(value)
         self.to_query = to_query
         self.evaluated = evaluated
 
     def __str__(self):
-        return f'{self.symbol}'
+        return f'Proposition {self.symbol}'
 
     def __repr__(self): 
         return self.__str__()
@@ -24,7 +25,7 @@ def create_propositions(rules, facts, queries):
 
     rules_proposition_set = set()
     for rule in rules:
-        rules_proposition_set.add(rule.get_all_props())
+        rules_proposition_set = rule.get_all_props(rules_proposition_set)
 
     for prop in rules_proposition_set:
         if prop not in propositions:
