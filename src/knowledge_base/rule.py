@@ -45,10 +45,10 @@ class Rule:
             self.collect_props_recursive(node.left, prop_set, separate_NOT)
             self.collect_props_recursive(node.right, prop_set, separate_NOT)
         else:
-            if separate_NOT and node.left.type == TokenType.Prop:
-                prop_set.add('!' + node.left.value)
-            else:
-                self.collect_props_recursive(node.left, prop_set, separate_NOT)
+            # if separate_NOT and node.left.type == TokenType.Prop:
+            #     prop_set.add('!' + node.left.value)
+            # else:
+            self.collect_props_recursive(node.left, prop_set, separate_NOT)
         return prop_set
     
     def __str__(self):

@@ -1,5 +1,6 @@
 from parser import TokenType
 from utils import Stack
+from .logical_value import LogicalValue
 
 class InferenceEngine:
     def __init__(self, rules, props, dependency_graph):
@@ -8,8 +9,8 @@ class InferenceEngine:
         self.dependency_graph = dependency_graph
 
     def answer_queries(self, facts, queries):
-        res = {query: True if query in facts else None for query in queries}
-        goals = Stack([k for k, v in res.items() if v is None])
+        res = {query: LogicalValue(True) if query in facts else LogicalValue(None) for query in queries}
+        goals = Stack([k for k, v in res.items() if v == None])
 
         while not goals.is_empty():
             goal = goals.pop()
@@ -20,21 +21,22 @@ class InferenceEngine:
     def evaluate_goal(self, goal):
         if self.props[goal].evaluated is True:
             return self.props[goal].value
-
+        
         self.props[goal].evaluated = True
         rule_indices = self.dependency_graph.get_rule_indices_for_goal(goal)
-        deduced_value = None
+        deduced_value = LogicalValue(None) if self.props[goal].to_query else LogicalValue(False)
 
         for index in rule_indices:
             rule = self.rules[index]
             premise_value = self.evaluate_node(rule.premise)
-            if premise_value is True:
-                deduced_value = self.deduce_proposition(rule.conclusion, goal)
-                if deduced_value is not None:
+            if premise_value == True:
+                deduced_value = LogicalValue(self.deduce_proposition(rule.conclusion, goal))
+                if deduced_value != None:
                     break
         return deduced_value
     
     def deduce_proposition(self, conclusion, goal):
+        #TODO when negation is involved
         if conclusion.type == TokenType.Prop:
             return True
         elif conclusion.type == TokenType.AND:
@@ -50,8 +52,6 @@ class InferenceEngine:
 
 
     def evaluate_node(self, node):
-        print('----------------')
-        print(node, node.value)
         if node.type == TokenType.Prop:
             return self.get_prop_value(node.value)
         elif node.type == TokenType.AND:
@@ -62,11 +62,12 @@ class InferenceEngine:
             return self.evaluate_node(node.left) ^ self.evaluate_node(node.right)
         elif node.type == TokenType.NOT:
             return not self.evaluate_node(node.left)
-        elif node.type == TokenType.IMPLIES:
-            return not self.evaluate_node(node.left) or self.evaluate_node(node.right)
-        elif node.type == TokenType.IFF:
-            return self.evaluate_node(node.left) == self.evaluate_node(node.right)
-        return False
+        # elif node.type == TokenType.IMPLIES:
+        #     return not self.evaluate_node(node.left) or self.evaluate_node(node.right)
+        # elif node.type == TokenType.IFF:
+        #     return LogicalValue(self.evaluate_node(node.left) == self.evaluate_node(node.right))
+        print('-------error---------')
+        return LogicalValue(None)
 
     def get_prop_value(self, symbol):
         prop = self.props[symbol]

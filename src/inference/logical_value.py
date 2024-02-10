@@ -5,6 +5,7 @@ class LogicalValue:
         self.value = value
 
     def __and__(self, other):
+        print('And')
         if self.value is False or other.value is False:
             return LogicalValue(False)
         elif self.value is True and other.value is True:
@@ -31,6 +32,13 @@ class LogicalValue:
             return LogicalValue(None)
         else:
             return LogicalValue(not self.value)
+        
+    def __eq__(self, other):
+        if isinstance(other, bool):
+            return self.value == other
+        if other is None:
+            return self.value is None
+        return self.value == other.value
 
     def __repr__(self):
         return f"LogicalValue({self.value})"

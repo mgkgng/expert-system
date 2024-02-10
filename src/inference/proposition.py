@@ -1,4 +1,3 @@
-from parser import TokenType
 from .logical_value import LogicalValue
 
 class Proposition:
@@ -9,7 +8,7 @@ class Proposition:
         self.evaluated = evaluated
 
     def __str__(self):
-        return f'Proposition {self.symbol}'
+        return f'Proposition {self.symbol} Value: {self.value}'
 
     def __repr__(self): 
         return self.__str__()
@@ -28,7 +27,7 @@ def create_propositions(rules, facts, queries):
         rules_proposition_set = rule.get_all_props(rules_proposition_set)
 
     for prop in rules_proposition_set:
-        if prop not in propositions:
+        if prop not in propositions.keys():
             propositions[prop] = Proposition(prop)
     
     return propositions

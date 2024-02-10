@@ -1,6 +1,6 @@
 import sys
 from parser import Parser, Lexer, ParserType
-from inference import InferenceEngine, Proposition, create_propositions
+from inference import InferenceEngine, create_propositions
 from knowledge_base import Rule, DepedencyGraph
 from utils import *
 
@@ -31,10 +31,11 @@ def main():
 
     dependency_graph = DepedencyGraph(rules)
     props = create_propositions(rules, facts, queries)
+    print(props)
     inference_engine = InferenceEngine(rules, props, dependency_graph)
     answers = inference_engine.answer_queries(facts, queries)
     for k, v in answers.items():
-        print(f'{k}: {v if v is not None else "Undetermined"}')
+        print(f'{k}: {v if v != None else "Undetermined"}')
 
 if __name__ == '__main__':
     main()
