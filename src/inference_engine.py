@@ -1,11 +1,12 @@
 from parser import TokenType
-from stack import Stack
+from utils import Stack
 from proposition import Proposition
 
 class InferenceEngine:
-    def __init__(self, rules, props):
+    def __init__(self, rules, props, dependency_graph):
         self.rules = rules
         self.props = props
+        self.dependency_graph = dependency_graph
 
     def find_rules_for_goal(self, goal):
         res = []
@@ -47,7 +48,6 @@ class InferenceEngine:
         elif node.type == TokenType.IFF:
             return self.evaluate_node(node.left) == self.evaluate_node(node.right)
         return False
-
 
     def get_prop_value(self, symbol):
         res = self.props[symbol].value

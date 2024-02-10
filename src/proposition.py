@@ -24,7 +24,7 @@ def create_propositions(rules, facts, queries):
 
     rules_proposition_set = set()
     for rule in rules:
-        rules_proposition_set.add(rule.get_props())
+        rules_proposition_set.add(rule.get_all_props())
 
     for prop in rules_proposition_set:
         if prop not in propositions:

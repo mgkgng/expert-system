@@ -1,4 +1,4 @@
-from parser import TokenType
+from parser import TokenType, TokenNotation
 from proposition import Proposition
 
 class Rule:
@@ -23,17 +23,32 @@ class Rule:
         # Return True if the premises are satisfied, False otherwise
         pass
 
-    def get_props(self):
-        prop_set = set()
-        self.collect_props_recursive(self.conclusion, prop_set)
-        self.collect_props_recursive(self.premise, prop_set)
+    def get_all_props(self, separate_NOT=False):
+        prop_set = self.collect_props_recursive(self.conclusion, separate_NOT=separate_NOT)
+        self.collect_props_recursive(self.premise, prop_set, separate_NOT=separate_NOT)
         return prop_set
+    
+    def get_premise_props(self, separate_NOT=False):
+        return self.collect_props_recursive(self.premise, separate_NOT=separate_NOT)
+    
+    def get_conclusion_props(self, separate_NOT=False):
+        return self.collect_props_recursive(self.conclusion, separate_NOT=separate_NOT)
+    
+    def collect_props_recursive(self, node, prop_set=None, separate_NOT=False):
+        if prop_set is None:
+            prop_set = set()
 
-    def collect_props_recursive(self, node, prop_set):
         if node.type == TokenType.Prop:
             prop_set.add(node.value)
         elif node.type != TokenType.NOT:
-            self.collect_props_recursive(node.left, prop_set)
-            self.collect_props_recursive(node.right, prop_set)
+            self.collect_props_recursive(node.left, prop_set, separate_NOT)
+            self.collect_props_recursive(node.right, prop_set, separate_NOT)
         else:
-            self.collect_props_recursive(node.left, prop_set)
+            if separate_NOT and node.left.type == TokenType.Prop:
+                prop_set.add('!' + node.left.value)
+            else:
+                self.collect_props_recursive(node.left, prop_set, separate_NOT)
+        return prop_set
+    
+    def __str__(self):
+        return f'{self.premise.to_rpn()} {TokenNotation[self.connection_type]} {self.conclusion.to_rpn()}'

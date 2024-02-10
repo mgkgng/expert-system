@@ -24,6 +24,15 @@ TokenString = {
     TokenType.IFF: "IFF"
 }
 
+TokenNotation = {
+    TokenType.AND: "&",
+    TokenType.OR: "|",
+    TokenType.NOT: "!",
+    TokenType.XOR: "^",
+    TokenType.IMPLIES: "->",
+    TokenType.IFF: "<->"
+}
+
 class Token:
     def __init__(self, type, value=None):
         self.type = type
