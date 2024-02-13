@@ -1,4 +1,5 @@
 import json
+from parser import TokenType
 
 class DepedencyGraph:
     def __init__(self, rules):
@@ -10,13 +11,18 @@ class DepedencyGraph:
         premise_props = rule.get_premise_props(True)
         conclusion_props = rule.get_conclusion_props()
 
-        for conclusion_prop in conclusion_props:
-            if conclusion_prop not in self.dependencies:
-                self.dependencies[conclusion_prop] = {}
-            for premise_prop in premise_props:
-                if premise_prop not in self.dependencies[conclusion_prop]:
-                    self.dependencies[conclusion_prop][premise_prop] = []
-                self.dependencies[conclusion_prop][premise_prop].append(index)
+        self.update_dependencies(conclusion_props, premise_props, index)
+        if rule.connection_type == TokenType.IFF:
+            self.update_dependencies(premise_props, conclusion_props, index)
+
+    def update_dependencies(self, target_props, source_props, index):
+        for target_prop in target_props:
+            if target_prop not in self.dependencies:
+                self.dependencies[target_prop] = {}
+            for source_prop in source_props:
+                if source_prop not in self.dependencies[target_prop]:
+                    self.dependencies[target_prop][source_prop] = []
+                self.dependencies[target_prop][source_prop].append(index)
 
     def get_rule_indices_for_goal(self, goal):
         if goal not in self.dependencies:

@@ -29,27 +29,34 @@ class InferenceEngine:
             rule = self.rules[index]
             premise_value = self.evaluate_node(rule.premise)
             if premise_value == True:
-                deduced_value = LogicalValue(self.deduce_proposition(rule.conclusion, goal))
+                deduced_value = self.deduce_proposition(rule.conclusion, goal)
                 if deduced_value != None:
                     self.props[goal].value = deduced_value
                     break
-                
+
         return deduced_value
     
     def deduce_proposition(self, conclusion, goal):
-        #TODO when negation is involved
         if conclusion.type == TokenType.Prop:
-            return True
+            return LogicalValue(True)
+        elif conclusion.type == TokenType.NOT:
+            return self.deduce_proposition(conclusion.left, goal)._not()
         elif conclusion.type == TokenType.AND:
-            return True # TODO check contradiction
+            return LogicalValue(True)
         elif conclusion.type == TokenType.OR:
             if conclusion.left.value == goal and conclusion.right.value == False:
-                return True
+                return LogicalValue(True)
             elif conclusion.right.value == goal and conclusion.left.value == False:
-                return True
-            return None
-        # TODO elif conclusion.type == TokenType.XOR:
-        return None
+                return LogicalValue(True)
+            return LogicalValue(None)
+        elif conclusion.type == TokenType.XOR:
+            if conclusion.left.value is None or conclusion.right.value is None:
+                return LogicalValue(None)
+            if conclusion.left.value == goal:
+                return conclusion.right._not()
+            else:
+                return conclusion.left._not()
+        return LogicalValue(None)
 
     def evaluate_node(self, node):
         if node.type == TokenType.Prop:
