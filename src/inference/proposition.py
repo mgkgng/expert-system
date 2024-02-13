@@ -17,7 +17,7 @@ def create_propositions(rules, facts, queries):
     propositions = {}
     
     for query in queries:
-        propositions[query] = Proposition(query, to_query=True)
+        propositions[query] = Proposition(query, to_query=True, value=None)
     
     for fact in facts:
         propositions[fact] = Proposition(fact, value=True, evaluated=True)

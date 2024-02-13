@@ -1,0 +1,8 @@
+# Chain of Inferences
+A => B
+B => C
+C => X
+=A
+?X
+
+# X: True

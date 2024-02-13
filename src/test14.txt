@@ -1,0 +1,10 @@
+A + B => X
+X + C => Y
+D ^ E => Z
+B => D
+C => E
+A + Y => F
+=ABC
+?XYZF
+
+# X: True, Y: True, Z: Undetermined, F: True

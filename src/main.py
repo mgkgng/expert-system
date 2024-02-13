@@ -31,7 +31,6 @@ def main():
 
     dependency_graph = DepedencyGraph(rules)
     props = create_propositions(rules, facts, queries)
-    print(props)
     inference_engine = InferenceEngine(rules, props, dependency_graph)
     answers = inference_engine.answer_queries(facts, queries)
     for k, v in answers.items():

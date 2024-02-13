@@ -1,0 +1,6 @@
+# Simple OR
+A | B => X
+=A
+?X
+
+# X : True

@@ -4,8 +4,7 @@ class LogicalValue:
             raise ValueError("LogicalValue must be True, False, or None (undefined).")
         self.value = value
 
-    def __and__(self, other):
-        print('And')
+    def _and(self, other):
         if self.value is False or other.value is False:
             return LogicalValue(False)
         elif self.value is True and other.value is True:
@@ -13,7 +12,7 @@ class LogicalValue:
         else:
             return LogicalValue(None)
 
-    def __or__(self, other):
+    def _or(self, other):
         if self.value is True or other.value is True:
             return LogicalValue(True)
         elif self.value is False and other.value is False:
@@ -21,13 +20,13 @@ class LogicalValue:
         else:
             return LogicalValue(None)
 
-    def __xor__(self, other):
+    def _xor(self, other):
         if self.value is None or other.value is None:
             return LogicalValue(None)
         else:
             return LogicalValue(self.value != other.value)
 
-    def __not__(self):
+    def _not(self):
         if self.value is None:
             return LogicalValue(None)
         else:
@@ -41,4 +40,4 @@ class LogicalValue:
         return self.value == other.value
 
     def __repr__(self):
-        return f"LogicalValue({self.value})"
+        return "Undetermined" if self.value is None else f"{self.value}"

@@ -1,0 +1,6 @@
+# Simple XOR
+A ^ B => X
+=A
+?X
+
+# X: True

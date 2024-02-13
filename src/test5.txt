@@ -1,0 +1,6 @@
+# AND in conclusion
+A => X + Y
+=A
+?XY
+
+# X: True, Y: True

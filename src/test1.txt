@@ -1,0 +1,6 @@
+# Simple AND
+A + B => X
+=AB
+?X
+
+# X : True

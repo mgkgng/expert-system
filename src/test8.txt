@@ -1,0 +1,7 @@
+# Multiple Rules for Same conclusion
+A => X
+B => X
+=B
+?X
+
+# X: True

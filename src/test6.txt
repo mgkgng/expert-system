@@ -1,0 +1,6 @@
+# Complex Condition with Parentheses
+(A + B) | C => X
+=C
+?X
+
+# X: True

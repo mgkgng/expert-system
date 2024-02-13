@@ -1,0 +1,7 @@
+# Nested Conditions
+
+((A | B) + (C ^ D)) => X
+=AD
+?X
+
+# X: True

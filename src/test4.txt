@@ -1,0 +1,6 @@
+# Negation
+!A => X
+=B
+?X
+
+# X : True

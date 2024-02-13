@@ -1,0 +1,4 @@
+# Complex Rule with XOR and AND
+(A ^ B) + C => X
+=AC
+?X

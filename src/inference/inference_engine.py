@@ -15,7 +15,6 @@ class InferenceEngine:
         while not goals.is_empty():
             goal = goals.pop()
             res[goal] = self.evaluate_goal(goal)
-        
         return res
 
     def evaluate_goal(self, goal):
@@ -32,7 +31,9 @@ class InferenceEngine:
             if premise_value == True:
                 deduced_value = LogicalValue(self.deduce_proposition(rule.conclusion, goal))
                 if deduced_value != None:
+                    self.props[goal].value = deduced_value
                     break
+                
         return deduced_value
     
     def deduce_proposition(self, conclusion, goal):
@@ -50,22 +51,17 @@ class InferenceEngine:
         # TODO elif conclusion.type == TokenType.XOR:
         return None
 
-
     def evaluate_node(self, node):
         if node.type == TokenType.Prop:
             return self.get_prop_value(node.value)
         elif node.type == TokenType.AND:
-            return self.evaluate_node(node.left) and self.evaluate_node(node.right)
+            return self.evaluate_node(node.left)._and(self.evaluate_node(node.right))
         elif node.type == TokenType.OR:
-            return self.evaluate_node(node.left) or self.evaluate_node(node.right)
+            return self.evaluate_node(node.left)._or(self.evaluate_node(node.right))
         elif node.type == TokenType.XOR:
-            return self.evaluate_node(node.left) ^ self.evaluate_node(node.right)
+            return self.evaluate_node(node.left)._xor(self.evaluate_node(node.right))
         elif node.type == TokenType.NOT:
-            return not self.evaluate_node(node.left)
-        # elif node.type == TokenType.IMPLIES:
-        #     return not self.evaluate_node(node.left) or self.evaluate_node(node.right)
-        # elif node.type == TokenType.IFF:
-        #     return LogicalValue(self.evaluate_node(node.left) == self.evaluate_node(node.right))
+            return self.evaluate_node(node.left)._not()
         print('-------error---------')
         return LogicalValue(None)
 

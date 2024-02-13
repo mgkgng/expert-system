@@ -1,0 +1,8 @@
+# Cyclic Dependency
+
+A => B
+B => A
+=A
+?B
+
+# B: True

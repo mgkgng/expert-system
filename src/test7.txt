@@ -1,0 +1,6 @@
+# Ambiguous OR
+A | B => X
+=
+?X
+
+# X: Unknown

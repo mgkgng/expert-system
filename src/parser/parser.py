@@ -43,7 +43,7 @@ class Parser:
 
     def fact_or_query(self):
         res = []
-        while self.current_token.type != TokenType.EOF:
+        while self.current_token and self.current_token.type != TokenType.EOF:
             if self.current_token.type == TokenType.Prop:
                 res.append(self.current_token.value)
             else:

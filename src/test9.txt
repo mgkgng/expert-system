@@ -1,0 +1,6 @@
+# XOR with Known Values
+A ^ B => X
+=A
+?XB
+
+# X: Undetermined, B: Undetermined
