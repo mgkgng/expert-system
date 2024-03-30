@@ -1,6 +1,6 @@
 # XOR with Known Values
 A ^ B => X
 =A
-?XB
+?XBA
 
 # X: Undetermined, B: Undetermined

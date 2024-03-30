@@ -33,7 +33,6 @@ class InferenceEngine:
                 if deduced_value != None:
                     self.props[goal].value = deduced_value
                     break
-
         return deduced_value
     
     def deduce_proposition(self, conclusion, goal):
