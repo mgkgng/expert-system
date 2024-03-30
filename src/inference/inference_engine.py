@@ -67,6 +67,7 @@ class InferenceEngine:
         elif node.type == TokenType.XOR:
             return self.evaluate_node(node.left)._xor(self.evaluate_node(node.right))
         elif node.type == TokenType.NOT:
+            print('allo')
             return self.evaluate_node(node.left)._not()
         print('-------error---------')
         return LogicalValue(None)

@@ -28,7 +28,7 @@ class LogicalValue:
 
     def _not(self):
         if self.value is None:
-            return LogicalValue(None)
+            return LogicalValue(None) # changed because for 42 project there is no value of undetermined
         else:
             return LogicalValue(not self.value)
         
